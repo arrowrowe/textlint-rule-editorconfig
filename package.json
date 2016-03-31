@@ -1,0 +1,65 @@
+{
+  "name": "textlint-rule-editorconfig",
+  "version": "0.0.1",
+  "description": "Let EditorConfig and Textlint works together.",
+  "main": "index.js",
+  "scripts": {
+    "lint": "xo",
+    "test:only": "ava test/**/*.spec.js",
+    "test:easy": "npm run lint && npm run test:only",
+    "test": "nyc npm run test:easy && npm run cover",
+    "test:report": "nyc --reporter=lcov npm run test:only && google-chrome coverage/lcov-report/index.html",
+    "cover": "nyc check-coverage --statements 100 --lines 100 --functions 100 --branches 100"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arrowrowe/textlint-rule-editorconfig.git"
+  },
+  "keywords": [
+    "EditorConfig",
+    "Textlint"
+  ],
+  "author": "arrowrowe <arrowrowe@gmail.com> (https://github.com/arrowrowe)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arrowrowe/textlint-rule-editorconfig/issues"
+  },
+  "homepage": "https://github.com/arrowrowe/textlint-rule-editorconfig#readme",
+  "dependencies": {
+    "bluebird": "3.3.4",
+    "clone": "1.0.2",
+    "extend": "3.0.0",
+    "minimatch": "3.0.0"
+  },
+  "devDependencies": {
+    "ava": "0.13.0",
+    "nyc": "6.1.1",
+    "sinon": "1.17.3",
+    "sort-keys": "1.1.1",
+    "xo": "0.13.0"
+  },
+  "xo": {
+    "esnext": false,
+    "semicolon": true,
+    "space": 2,
+    "rules": {
+      "arrow-parens": [
+        2,
+        "always"
+      ],
+      "prefer-const": 2,
+      "no-var": 2,
+      "no-throw-literal": 0,
+      "quote-props": 0,
+      "no-console": 2,
+      "camelcase": 0,
+      "no-cond-assign": 0
+    }
+  },
+  "nyc": {
+    "exclude": [
+      "ini.js",
+      "test"
+    ]
+  }
+}
