@@ -1,6 +1,6 @@
 {
   "name": "textlint-rule-editorconfig",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Let EditorConfig and Textlint works together.",
   "main": "index.js",
   "scripts": {

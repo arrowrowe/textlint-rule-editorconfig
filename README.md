@@ -4,7 +4,7 @@
 [![Gitter][gitter-badge]][gitter-url]
 [![Build Status][build-badge]][build-url]
 [![Coverage][coverage-badge]][coverage-url]
-(todo: a npm badge)
+[![NPM Version][npm-badge]][npm-url]
 
 [textlint-badge]: https://img.shields.io/badge/textlint-fixable-green.svg?style=social
 [gitter-badge]: https://badges.gitter.im/arrowrowe/textlint-rule-editorconfig.svg
@@ -13,6 +13,8 @@
 [build-badge]: https://travis-ci.org/arrowrowe/textlint-rule-editorconfig.svg
 [coverage-url]: https://codecov.io/github/arrowrowe/textlint-rule-editorconfig?branch=master
 [coverage-badge]: https://codecov.io/github/arrowrowe/textlint-rule-editorconfig/coverage.svg?branch=master
+[npm-badge]: https://img.shields.io/npm/v/textlint-rule-editorconfig.svg
+[npm-url]: https://www.npmjs.com/package/textlint-rule-editorconfig
 
 [EditorConfig]: http://editorconfig.org/
 [Textlint]: https://textlint.github.io/
@@ -20,13 +22,9 @@
 
 Let [EditorConfig][EditorConfig] and [Textlint][Textlint] work together.
 
-NOTE: This repo is **STILL** in development. Any help is welcome.
-
 ## Usage
 
 See also [Textlint's readme][Textlint-readme].
-
-(Currently **NOT** available, as this repo is not yet published on NPM.)
 
 __TL;DR__
 
@@ -62,3 +60,7 @@ $ npm run textlint:fix
   - `insert_final_newline`: as you may expect. Fixable.
   - `end_of_line`: as you may expect. Fixable.
   - `charset`: based on [jschardet](https://github.com/aadsm/jschardet). Not fixable, as it is kind of dangerous.
+
+## Contribute
+
+Feel free to open issues or send PRs.
