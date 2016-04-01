@@ -1,20 +1,15 @@
 'use strict';
 
+const utilReport = require('./util/report');
+
 const scanOnce = (rule, args, match) => {
   const report = rule.report(match);
   if (report === null) {
     return;
   }
-  const detail = {
-    index: 'index' in report ? report.index : match.index
-  };
-  if ('fix' in report) {
-    detail.fix = args.context.fixer.replaceTextRange(
-      [detail.index, detail.index + ('length' in report ? report.length : match[0].length)],
-      report.fix
-    );
-  }
-  args.context.report(args.node, new args.context.RuleError(rule.textWarn, detail));
+  report.index = 'index' in report ? report.index : match.index;
+  report.length = 'length' in report ? report.length : match[0].length;
+  utilReport(args, report, rule.textWarn);
 };
 
 module.exports = (rule, args) => {

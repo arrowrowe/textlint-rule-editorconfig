@@ -1,5 +1,7 @@
 const jschardet = require('jschardet');
 
+const utilReport = require('../util/report');
+
 module.exports = (config, args) => {
   if (typeof config.charset !== 'string') {
     return;
@@ -8,13 +10,11 @@ module.exports = (config, args) => {
   const real = jschardet.detect(args.text);
   real.encoding = real.encoding.toLowerCase();
   if (real.encoding !== expected) {
-    args.context.report(
-      args.node,
-      new args.context.RuleError(
-        'Found ' + real.confidence.toString() + ' possible wrong charset "' +
-          real.encoding + '", expected "' + expected + '".',
-        {index: 0}
-      )
+    utilReport(
+      args,
+      {index: 0},
+      'Found ' + real.confidence.toString() + ' possible wrong charset "' +
+        real.encoding + '", expected "' + expected + '".'
     );
   }
 };

@@ -3,10 +3,15 @@
 const getConfig = require('./editorconfig/get-config');
 const rules = require('./rules');
 
-function reporter(context) {
+function reporter(context, option) {
   const exports = {};
   exports[context.Syntax.Document] = (node) => getConfig(context.getFilePath()).then((config) => {
-    const args = {context, node, text: context.getSource(node)};
+    const args = {
+      context,
+      node,
+      option,
+      text: context.getSource(node)
+    };
     rules.forEach((rule) => rule(config, args));
   });
   return exports;

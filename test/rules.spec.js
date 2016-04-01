@@ -12,10 +12,11 @@ const elementsSame = (t, a, b) => {
   t.same(a.map(sortKeys), b.map(sortKeys));
 };
 
-const z = (t, config, text, expected) => {
+const zOption = (t, option, config, text, expected) => {
   const errors = [];
   const args = {
     text,
+    option,
     context: {
       RuleError: (textWarn, detail) => detail,
       report: (node, error) => errors.push(error),
@@ -30,6 +31,10 @@ const z = (t, config, text, expected) => {
   } else {
     t.is(errors.length, 0);
   }
+};
+
+const z = (t, config, text, expected) => {
+  zOption(t, Object.create(null), config, text, expected);
 };
 
 test('Indent', (t) => {
