@@ -46,7 +46,7 @@ test('Ignore wrong configurations', (t) => {
 
 test('Indent', (t) => {
   z(t, {
-    'indent_style': 'space',
+    'indent_style': 'SpAcE',  // automatically lowercase this
     'indent_size': 2
   }, '\t1\n\t\t2\n  \t \t5\n    4', [
     {index: 0, fix: {range: [0, 1], fix: '  '}},

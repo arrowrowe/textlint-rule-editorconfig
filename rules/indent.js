@@ -4,7 +4,7 @@ module.exports = (config, args) => {
   if (typeof config.indent_style !== 'string') {
     return;
   }
-  const ruleValue = config.indent_style.toString();
+  const ruleValue = config.indent_style.toLowerCase();
   const rule = Object.create(null);
   if (ruleValue === 'tab') {
     rule.textWarn = 'Found space indent!';
