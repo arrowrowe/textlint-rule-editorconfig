@@ -37,6 +37,13 @@ const z = (t, config, text, expected) => {
   zOption(t, Object.create(null), config, text, expected);
 };
 
+test('Ignore wrong configurations', (t) => {
+  z(t, {
+    'indent_style': 'some-unkown-indent-style',
+    'end_of_line': 'some-unkown-eol'
+  }, 'Some text.');
+});
+
 test('Indent', (t) => {
   z(t, {
     'indent_style': 'space',

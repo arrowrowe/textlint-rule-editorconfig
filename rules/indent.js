@@ -1,7 +1,10 @@
 const scan = require('../scan');
 
 module.exports = (config, args) => {
-  const ruleValue = config.indent_style;
+  if (typeof config.indent_style !== 'string') {
+    return;
+  }
+  const ruleValue = config.indent_style.toString();
   const rule = Object.create(null);
   if (ruleValue === 'tab') {
     rule.textWarn = 'Found space indent!';

@@ -5,7 +5,10 @@ const INDEX_CR = 0;
 const INDEX_LF = 1;
 
 module.exports = (config, args) => {
-  const EOL_TYPE = EOL_NAMES.indexOf(config.end_of_line);
+  if (typeof config.end_of_line !== 'string') {
+    return;
+  }
+  const EOL_TYPE = EOL_NAMES.indexOf(config.end_of_line.toLowerCase());
   if (EOL_TYPE === -1) {
     return;
   }
