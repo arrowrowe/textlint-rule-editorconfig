@@ -1,0 +1,16 @@
+language: node_js
+
+node_js:
+  - "5"
+  - "4"
+
+install:
+  - npm install && npm install codecov.io
+
+after_success:
+  - cat ./coverage/lcov.info | ./node_modules/.bin/codecov
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/0a98527f04e80088cb0b
