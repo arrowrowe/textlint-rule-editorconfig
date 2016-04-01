@@ -4,6 +4,9 @@ node_js:
   - "5"
   - "4"
 
+before_install:
+  - npm install -g npm@latest
+
 install:
   - npm install && npm install codecov.io
 
