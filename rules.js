@@ -1,4 +1,5 @@
 module.exports = [
   require('./rules/indent'),
-  require('./rules/trailing-space')
+  require('./rules/trailing-space'),
+  require('./rules/final-newline')
 ];

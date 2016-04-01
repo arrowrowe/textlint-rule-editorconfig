@@ -1,33 +1,20 @@
-'use strict';
+const scan = require('../scan');
 
-module.exports = (context, node, text, config) => {
+module.exports = (config, args) => {
   const ruleValue = config.indent_style;
-  if (!ruleValue) {
-    return;
-  }
-  let pattern;
-  let textWarn;
-  let fix;
-  const indentSize = Math.max(Number(config.indent_size), 1);
+  const rule = Object.create(null);
   if (ruleValue === 'tab') {
-    pattern = /^ +/mg;
-    textWarn = 'Found space at line\'s beginning';
-    fix = (length) => '\t'.repeat(Math.ceil(length / indentSize));
+    rule.textWarn = 'Found space indent!';
+    rule.report = (match) => match[0].indexOf(' ') === -1 ? null : {};
   } else if (ruleValue === 'space') {
-    pattern = /^\t+/mg;
-    textWarn = 'Found tab at line\'s beginning';
-    fix = (length) => ' '.repeat(length * indentSize);
+    const tabReplacer = ' '.repeat(Math.max(Number(config.indent_size), 1));
+    rule.textWarn = 'Found tab indent!';
+    rule.report = (match) => match[0].indexOf('\t') === -1 ? null : {
+      fix: match[0].replace(/\t/g, tabReplacer)
+    };
   } else {
-    // console.warn('Invalid: "indent_style = %s"', ruleValue);
     return;
   }
-  let match;
-  while (match = pattern.exec(text)) {
-    const index = match.index;
-    const length = match[0].length;
-    context.report(node, new context.RuleError(textWarn, {
-      index,
-      fix: context.fixer.replaceTextRange([index, index + length], fix(length))
-    }));
-  }
+  rule.pattern = /^[ \t]+/mg;
+  scan(rule, args);
 };
