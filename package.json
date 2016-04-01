@@ -29,6 +29,7 @@
     "bluebird": "3.3.4",
     "clone": "1.0.2",
     "extend": "3.0.0",
+    "jschardet": "1.4.1",
     "minimatch": "3.0.0"
   },
   "devDependencies": {

@@ -108,3 +108,22 @@ test('EOL', (t) => {
     {index: 13, fix: {range: [13, 14], fix: '\r\n'}}
   ]);
 });
+
+test('Charset', (t) => {
+  z(t, {
+    'charset': 'utf-8'
+  }, '\xc3\xa0\xc3\xad\xc3\xa0\xc3\xa7\xc3\xa3');
+  z(t, {
+    'charset': 'big5'
+  }, '\xc3\xa0\xc3\xad\xc3\xa0\xc3\xa7\xc3\xa3', [
+    {index: 0}
+  ]);
+  z(t, {
+    'charset': 'big5'
+  }, '\xa6\xb8\xb1\x60\xa5\xce\xb0\xea\xa6\x72\xbc\xd0\xb7\xc7\xa6\x72\xc5\xe9\xaa\xed');
+  z(t, {
+    'charset': 'utf-8'
+  }, '\xa6\xb8\xb1\x60\xa5\xce\xb0\xea\xa6\x72\xbc\xd0\xb7\xc7\xa6\x72\xc5\xe9\xaa\xed', [
+    {index: 0}
+  ]);
+});

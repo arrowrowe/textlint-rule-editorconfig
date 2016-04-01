@@ -61,3 +61,4 @@ $ npm run textlint:fix
   - `trim_trailing_whitespace`: as you may expect. Fixable.
   - `insert_final_newline`: as you may expect. Fixable.
   - `end_of_line`: as you may expect. Fixable.
+  - `charset`: based on [jschardet](https://github.com/aadsm/jschardet). Not fixable, as it is kind of dangerous.
