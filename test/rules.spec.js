@@ -81,3 +81,30 @@ test('Final new line', (t) => {
     'insert_final_newline': true
   }, '123\n');
 });
+
+test('EOL', (t) => {
+  z(t, {
+    'end_of_line': 'cr'
+  }, '\n1  \r2\r\n3 \r  \n   4 5\r\n6  ', [
+    {index: 0, fix: {range: [0, 1], fix: '\r'}},
+    {index: 6, fix: {range: [6, 8], fix: '\r'}},
+    {index: 13, fix: {range: [13, 14], fix: '\r'}},
+    {index: 20, fix: {range: [20, 22], fix: '\r'}}
+  ]);
+  z(t, {
+    'end_of_line': 'lf'
+  }, '\r1  \n2\r\n3 \n  \r   4 5\r\n6  ', [
+    {index: 0, fix: {range: [0, 1], fix: '\n'}},
+    {index: 6, fix: {range: [6, 8], fix: '\n'}},
+    {index: 13, fix: {range: [13, 14], fix: '\n'}},
+    {index: 20, fix: {range: [20, 22], fix: '\n'}}
+  ]);
+  z(t, {
+    'end_of_line': 'crlf'
+  }, '\n1  \r2\r\n3 \r  \n   4 5\r\n6  ', [
+    {index: 0, fix: {range: [0, 1], fix: '\r\n'}},
+    {index: 4, fix: {range: [4, 5], fix: '\r\n'}},
+    {index: 10, fix: {range: [10, 11], fix: '\r\n'}},
+    {index: 13, fix: {range: [13, 14], fix: '\r\n'}}
+  ]);
+});

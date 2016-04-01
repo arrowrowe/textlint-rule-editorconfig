@@ -60,3 +60,4 @@ $ npm run textlint:fix
     - If `indent_style = tab`, unable to fix. Only warnings generated.
   - `trim_trailing_whitespace`: as you may expect. Fixable.
   - `insert_final_newline`: as you may expect. Fixable.
+  - `end_of_line`: as you may expect. Fixable.
