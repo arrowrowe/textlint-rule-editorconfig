@@ -28,6 +28,16 @@ See also [Textlint's readme][Textlint-readme].
 
 __TL;DR__
 
+`.textlintrc`
+```javascript
+{
+  "rules": {
+    "editorconfig": true
+  }
+}
+```
+
+`package.json`
 ```javascript
 {
   // ...
@@ -39,6 +49,7 @@ __TL;DR__
 }
 ```
 
+Command line:
 ```
 $ npm i -S textlint
 $ npm i -S textlint-rule-editorconfig
