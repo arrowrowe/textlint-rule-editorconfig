@@ -7,7 +7,7 @@
     "lint": "xo",
     "test:only": "ava test/**/*.spec.js",
     "test:easy": "npm run lint && npm run test:only",
-    "test": "nyc -r lcov -r text node $(which npm) run test:easy && npm run cover",
+    "test": "nyc -r lcov -r text npm run test:easy && npm run cover",
     "test:report": "nyc -r lcov npm run test:only && google-chrome coverage/lcov-report/index.html",
     "cover": "nyc check-coverage --statements 100 --lines 100 --functions 100 --branches 100"
   },
@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "ava": "0.13.0",
-    "nyc": "6.1.1",
+    "nyc": "6.2.0-alpha1",
     "sinon": "1.17.3",
     "sort-keys": "1.1.1",
     "xo": "0.13.0"
