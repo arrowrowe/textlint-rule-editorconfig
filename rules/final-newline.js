@@ -1,5 +1,18 @@
 const scan = require('../scan');
 
+const eofTypeToChar = (eolType) => {
+  switch (eolType.toString().toLowerCase()) {
+    case 'cr':
+      return '\r';
+    case 'lf':
+      return '\n';
+    case 'crlf':
+      return '\r\n';
+    default:
+      return null;
+  }
+};
+
 module.exports = (config, args) => {
   if (config.insert_final_newline) {
     scan({
@@ -13,7 +26,7 @@ module.exports = (config, args) => {
             {
               index: match.index + raw.length,
               length: 0,
-              fix: config.end_of_line || '\n'
+              fix: eofTypeToChar(config.end_of_line) || '\n'
             } :
             null;
       }
