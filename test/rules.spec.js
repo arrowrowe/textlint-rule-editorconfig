@@ -77,14 +77,36 @@ test('Final new line', (t) => {
     {index: 0, fix: {range: [0, 0], fix: '\n'}}
   ]);
   z(t, {
+    'end_of_line': null,
+    'insert_final_newline': true
+  }, '', [
+    {index: 0, fix: {range: [0, 0], fix: '\n'}}
+  ]);
+  z(t, {
+    'end_of_line': 'some-strange-things',
+    'insert_final_newline': true
+  }, '', [
+    {index: 0, fix: {range: [0, 0], fix: '\n'}}
+  ]);
+  z(t, {
+    'end_of_line': 'lf',
     'insert_final_newline': true
   }, '123', [
     {index: 3, fix: {range: [3, 3], fix: '\n'}}
   ]);
   z(t, {
+    'end_of_line': 'cr',
     'insert_final_newline': true
   }, '456\n123', [
-    {index: 7, fix: {range: [7, 7], fix: '\n'}}
+    {index: 7, fix: {range: [7, 7], fix: '\r'}},
+    {index: 3, fix: {range: [3, 4], fix: '\r'}}
+  ]);
+  z(t, {
+    'end_of_line': 'crlf',
+    'insert_final_newline': true
+  }, '456\n123', [
+    {index: 7, fix: {range: [7, 7], fix: '\r\n'}},
+    {index: 3, fix: {range: [3, 4], fix: '\r\n'}}
   ]);
   z(t, {
     'insert_final_newline': true
