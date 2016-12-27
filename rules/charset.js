@@ -6,6 +6,9 @@ module.exports = (config, args) => {
   if (typeof config.charset !== 'string') {
     return;
   }
+  if (args.option.charset === false) {
+    return;
+  }
   const expected = config.charset.toLowerCase();
   const real = jschardet.detect(args.text);
   real.encoding = real.encoding.toLowerCase();
