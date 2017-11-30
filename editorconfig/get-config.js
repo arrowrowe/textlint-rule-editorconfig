@@ -3,11 +3,12 @@ const loopRoot = require('./loop-root');
 const sortBy = (array, prop) => array.sort((a, b) => a[prop] - b[prop]);
 const clone = require('clone');
 const extend = require('extend');
+const path = require('path');
 
 module.exports = (file) => getRoot(file).then((root) => {
   const options = [];
   loopRoot(root, (option) => {
-    if (option._pattern(file)) {
+    if (option._pattern(path.relative(option._dir, file))) {
       options.push(option);
     }
   });
@@ -20,5 +21,6 @@ module.exports = (file) => getRoot(file).then((root) => {
   const ret = options[0];
   delete ret._priority;
   delete ret._pattern;
+  delete ret._dir;
   return ret;
 });

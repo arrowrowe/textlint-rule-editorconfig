@@ -38,6 +38,14 @@ const _getRootByDir = getRoot._getRootByDir = function (dir) {
     .catch(() =>
       dir === '/' ? defaults : this.getRootByDir(parentDir(dir))
     )
+    .then((options) => {
+      for (const k in options) {
+        if (typeof options[k] === 'object') {
+          options[k]._dir = dir;
+        }
+      }
+      return options;
+    })
     .then((options) =>
       (options.root || (dir === '/')) ?
         options :
