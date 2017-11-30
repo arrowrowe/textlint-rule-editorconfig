@@ -34,6 +34,7 @@ test.after('Restore `fs.readFile`', () => {
 const cleanClone = (root) => loopRoot(clone(root), (option, pattern, rootCloned) => {
   delete rootCloned[pattern]._priority;
   delete rootCloned[pattern]._pattern;
+  delete rootCloned[pattern]._dir;
 });
 
 const zRoot = (t, file, expected) => getRoot(file).tap(
