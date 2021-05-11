@@ -1,6 +1,6 @@
 {
   "name": "textlint-rule-editorconfig",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Let EditorConfig and Textlint works together.",
   "main": "index.js",
   "scripts": {
@@ -28,9 +28,9 @@
   "dependencies": {
     "bluebird": "3.3.4",
     "clone": "1.0.2",
-    "extend": "^3.0.2",
+    "extend": "3.0.2",
     "jschardet": "1.4.1",
-    "minimatch": "^3.0.2"
+    "minimatch": "3.0.4"
   },
   "devDependencies": {
     "ava": "^3.15.0",
