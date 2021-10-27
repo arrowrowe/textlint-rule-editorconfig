@@ -26,9 +26,10 @@ Let [EditorConfig][EditorConfig] and [Textlint][Textlint] work together.
 
 See also [Textlint's readme][Textlint-readme].
 
-__TL;DR__
+## TL;DR
 
 `.textlintrc`
+
 ```javascript
 {
   "rules": {
@@ -38,6 +39,7 @@ __TL;DR__
 ```
 
 `package.json`
+
 ```javascript
 {
   // ...
@@ -50,11 +52,12 @@ __TL;DR__
 ```
 
 Command line:
-```
-$ npm i -S textlint
-$ npm i -S textlint-rule-editorconfig
-$ npm run textlint
-$ npm run textlint:fix
+
+```shell
+npm i -S textlint
+npm i -S textlint-rule-editorconfig
+npm run textlint
+npm run textlint:fix
 ```
 
 ## Strategy
