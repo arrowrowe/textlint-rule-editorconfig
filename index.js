@@ -1,7 +1,5 @@
-'use strict';
-
-const getConfig = require('./editorconfig/get-config');
-const rules = require('./rules');
+import getConfig from './editorconfig/get-config.js';
+import rules from './rules.js';
 
 function reporter(context, option) {
   const exports = {};
@@ -10,14 +8,18 @@ function reporter(context, option) {
       context,
       node,
       option,
-      text: context.getSource(node)
+      text: context.getSource(node),
     };
-    rules.forEach((rule) => rule(config, args));
+    for (const rule of rules) {
+      rule(config, args);
+    }
   });
   return exports;
 }
 
-module.exports = {
+const reporters = {
   linter: reporter,
-  fixer: reporter
+  fixer: reporter,
 };
+
+export default reporters;

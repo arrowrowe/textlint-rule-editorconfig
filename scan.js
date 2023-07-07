@@ -1,18 +1,17 @@
-'use strict';
-
-const utilReport = require('./util/report');
+import utilReport from './util/report.js';
 
 const scanOnce = (rule, args, match) => {
   const report = rule.report(match);
   if (report === null) {
     return;
   }
+
   report.index = 'index' in report ? report.index : match.index;
   report.length = 'length' in report ? report.length : match[0].length;
   utilReport(args, report, rule.textWarn);
 };
 
-module.exports = (rule, args) => {
+const rule = (rule, args) => {
   if (rule.pattern.global) {
     let match;
     while (match = rule.pattern.exec(args.text)) {
@@ -22,3 +21,5 @@ module.exports = (rule, args) => {
     scanOnce(rule, args, rule.pattern.exec(args.text));
   }
 };
+
+export default rule;

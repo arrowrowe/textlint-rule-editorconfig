@@ -1,6 +1,8 @@
-const match = require('../match');
-const loopRoot = require('./loop-root');
+import match from '../match.js';
+import loopRoot from './loop-root.js';
 
-module.exports = (root) => loopRoot(root, (option, pattern) => {
+const preRoot = (root) => loopRoot(root, (option, pattern) => {
   option._pattern = match(pattern);
 });
+
+export default preRoot;

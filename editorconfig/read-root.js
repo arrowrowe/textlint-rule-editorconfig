@@ -1,14 +1,16 @@
-const fs = require('fs');
-const Promise = require('bluebird');
-const ini = require('../ini');
-const preRoot = require('./pre-root');
+import fs from 'node:fs';
+import Promise from 'bluebird';
+import {decode} from '../ini.js';
+import preRoot from './pre-root.js';
 
 // Do NOT use `Promise.promisify`,
 // cause we have to stub `fs.readFile` to mock...
 const read = (file) => new Promise((resolve, reject) =>
-  fs.readFile(file, 'utf-8', (err, data) =>
-    err ? reject(err) : resolve(data)
-  )
+  fs.readFile(file, 'utf8', (error, data) =>
+    error ? reject(error) : resolve(data),
+  ),
 );
 
-module.exports = (rootPath) => read(rootPath, 'utf-8').then(ini.decode).then(preRoot);
+const readRoot = (rootPath) => read(rootPath, 'utf8').then(decode).then(preRoot);
+
+export default readRoot;

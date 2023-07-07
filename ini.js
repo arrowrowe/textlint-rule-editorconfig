@@ -1,24 +1,20 @@
 // Based on [ini](https://github.com/npm/ini) by Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/).
 // Modified, cause here we need to know each section's priority.
 
-'use strict';
+import process from 'node:process';
 
-exports.parse = exports.decode = decode;
-exports.stringify = exports.encode = encode;
-
-exports.safe = safe;
-exports.unsafe = unsafe;
+export {decode as parse, decode, encode as stringify, encode, safe, unsafe};
 
 const eol = process.platform === 'win32' ? '\r\n' : '\n';
 
-function encode(obj, opt) {
+function encode(object, opt) {
   const children = [];
   let out = '';
 
   if (typeof opt === 'string') {
     opt = {
       section: opt,
-      whitespace: false
+      whitespace: false,
     };
   } else {
     opt = opt || {};
@@ -27,84 +23,100 @@ function encode(obj, opt) {
 
   const separator = opt.whitespace ? ' = ' : '=';
 
-  Object.keys(obj).forEach(function (k) {
-    const val = obj[k];
-    if (val && Array.isArray(val)) {
-      val.forEach(function (item) {
+  for (const k of Object.keys(object)) {
+    const value = object[k];
+    if (value && Array.isArray(value)) {
+      for (const item of value) {
         out += safe(k + '[]') + separator + safe(item) + '\n';
-      });
-    } else if (val && typeof val === 'object') {
+      }
+    } else if (value && typeof value === 'object') {
       children.push(k);
     } else {
-      out += safe(k) + separator + safe(val) + eol;
+      out += safe(k) + separator + safe(value) + eol;
     }
-  });
+  }
 
-  if (opt.section && out.length) {
+  if (opt.section && out.length > 0) {
     out = '[' + safe(opt.section) + ']' + eol + out;
   }
 
-  children.forEach(function (k) {
+  for (const k of children) {
     const nk = dotSplit(k).join('\\.');
     const section = (opt.section ? opt.section + '.' : '') + nk;
-    const child = encode(obj[k], {
-      section: section,
-      whitespace: opt.whitespace
+    const child = encode(object[k], {
+      section,
+      whitespace: opt.whitespace,
     });
-    if (out.length && child.length) {
+    if (out.length > 0 && child.length > 0) {
       out += eol;
     }
+
     out += child;
-  });
+  }
 
   return out;
 }
 
-function dotSplit(str) {
-  return str.replace(/\1/g, '\u0002LITERAL\\1LITERAL\u0002')
+function dotSplit(string_) {
+  return string_.replace(/\1/g, '\u0002LITERAL\\1LITERAL\u0002')
     .replace(/\\\./g, '\u0001')
-    .split(/\./).map(function (part) {
-      return part.replace(/\1/g, '\\.')
-      .replace(/\2LITERAL\\1LITERAL\2/g, '\u0001');
-    });
+    .split(/\./).map((part) => part.replace(/\1/g, '\\.')
+      .replace(/\2LITERAL\\1LITERAL\2/g, '\u0001'));
 }
 
-function decode(str) {
+function decode(string_) {
   const out = Object.create(null);
   let p = out;
   let section = null;
-  //            section     |key      = value
-  const re = /^\[([^\]]*)\]$|^([^=]+)(=(.*))?$/i;
-  const lines = str.split(/[\r\n]+/g);
+  //            Section     |key      = value
+  const re = /^\[([^\]]*)]$|^([^=]+)(=(.*))?$/i;
+  const lines = string_.split(/[\r\n]+/g);
 
-  lines.forEach(function (line, lineIndex) {
-    if (!line || line.match(/^\s*[;#]/)) {
-      return;
+  for (const [lineIndex, line] of lines.entries()) {
+    if (!line || /^\s*[;#]/.test(line)) {
+      continue;
     }
+
     const match = line.match(re);
     if (!match) {
-      return;
+      continue;
     }
+
     if (match[1] !== undefined) {
       section = unsafe(match[1]);
-      p = out[section] = out[section] || {};
+      p = out[section] || {};
+      out[section] = p;
       p._priority = lineIndex;
-      return;
+      continue;
     }
+
     let key = unsafe(match[2]);
     let value = match[3] ? unsafe((match[4] || '')) : true;
 
-    if (value === 'true') {
-      value = true;
-    } else if (value === 'false') {
-      value = false;
-    } else if (value === 'null') {
-      value = null;
+    switch (value) {
+      case 'true': {
+        value = true;
+
+        break;
+      }
+
+      case 'false': {
+        value = false;
+
+        break;
+      }
+
+      case 'null': {
+        value = null;
+
+        break;
+      }
+    // No default
     }
 
     // Convert keys with '[]' suffix to an array
     if (key.length > 2 && key.slice(-2) === '[]') {
-      key = key.substring(0, key.length - 2);
+      key = key.slice(0, Math.max(0, key.length - 2));
       if (!p[key]) {
         p[key] = [];
       } else if (!Array.isArray(p[key])) {
@@ -112,14 +124,14 @@ function decode(str) {
       }
     }
 
-    // safeguard against resetting a previously defined
+    // Safeguard against resetting a previously defined
     // array by accidentally forgetting the brackets
     if (Array.isArray(p[key])) {
       p[key].push(value);
     } else {
       p[key] = value;
     }
-  });
+  }
 
   /*
   // {a:{y:1},"a.b":{x:2}} --> {a:{y:1,b:{x:2}}}
@@ -155,46 +167,43 @@ function decode(str) {
   return out;
 }
 
-function isQuoted(val) {
-  return (val.charAt(0) === '"' && val.slice(-1) === '"') ||
-    (val.charAt(0) === "'" && val.slice(-1) === "'");
+function isQuoted(value) {
+  return (value.charAt(0) === '"' && value.slice(-1) === '"')
+    || (value.charAt(0) === '\'' && value.slice(-1) === '\'');
 }
 
-function safe(val) {
-  return (typeof val !== 'string' ||
-    val.match(/[=\r\n]/) ||
-    val.match(/^\[/) ||
-    (val.length > 1 &&
-     isQuoted(val)) ||
-    val !== val.trim()) ?
-      JSON.stringify(val) :
-      val.replace(/;/g, '\\;').replace(/#/g, '\\#');
+function safe(value) {
+  return (typeof value !== 'string'
+    || /[=\r\n]/.test(value)
+    || /^\[/.test(value)
+    || (value.length > 1
+     && isQuoted(value))
+    || value !== value.trim())
+    ? JSON.stringify(value)
+    : value.replace(/;/g, '\\;').replace(/#/g, '\\#');
 }
 
-function unsafe(val) {
-  val = (val || '').trim();
-  if (isQuoted(val)) {
-    // remove the single quotes before calling JSON.parse
-    if (val.charAt(0) === "'") {
-      val = val.substr(1, val.length - 2);
+function unsafe(value) {
+  value = (value || '').trim();
+  if (isQuoted(value)) {
+    // Remove the single quotes before calling JSON.parse
+    if (value.charAt(0) === '\'') {
+      value = value.slice(1, 1 + value.length - 2);
     }
+
     try {
-      val = JSON.parse(val);
-    } catch (_) {}
+      value = JSON.parse(value);
+    } catch {}
   } else {
-    // walk the val to find the first not-escaped ; character
+    // Walk the val to find the first not-escaped ; character
     let esc = false;
     let unesc = '';
-    for (let i = 0, l = val.length; i < l; i++) {
-      const c = val.charAt(i);
+    for (let i = 0, l = value.length; i < l; i++) {
+      const c = value.charAt(i);
       if (esc) {
-        if ('\\;#'.indexOf(c) === -1) {
-          unesc += '\\' + c;
-        } else {
-          unesc += c;
-        }
+        unesc += '\\;#'.includes(c) ? c : '\\' + c;
         esc = false;
-      } else if (';#'.indexOf(c) !== -1) {
+      } else if (';#'.includes(c)) {
         break;
       } else if (c === '\\') {
         esc = true;
@@ -202,10 +211,13 @@ function unsafe(val) {
         unesc += c;
       }
     }
+
     if (esc) {
       unesc += '\\';
     }
+
     return unesc;
   }
-  return val;
+
+  return value;
 }
