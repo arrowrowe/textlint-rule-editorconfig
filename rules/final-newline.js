@@ -1,4 +1,4 @@
-const scan = require('../scan');
+import scan from '../scan.js';
 
 const eofTypeToChar = (eolType) => {
   if (typeof eolType !== 'string') {
@@ -24,7 +24,7 @@ const eofTypeToChar = (eolType) => {
   }
 };
 
-module.exports = (config, args) => {
+const finalNewline = (config, args) => {
   if (config.insert_final_newline) {
     const fix = eofTypeToChar(config.end_of_line) || '\n';
     scan({
@@ -45,3 +45,5 @@ module.exports = (config, args) => {
     }, args);
   }
 };
+
+export default finalNewline;

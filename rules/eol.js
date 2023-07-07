@@ -1,10 +1,10 @@
-const scan = require('../scan');
+import scan from '../scan.js';
 
 const EOL_NAMES = ['cr', 'lf', 'crlf'];
 const INDEX_CR = 0;
 const INDEX_LF = 1;
 
-module.exports = (config, args) => {
+const rule = (config, args) => {
   if (typeof config.end_of_line !== 'string') {
     return;
   }
@@ -36,3 +36,5 @@ module.exports = (config, args) => {
 
   scan(rule, args);
 };
+
+export default rule;

@@ -1,6 +1,6 @@
-const scan = require('../scan');
+import scan from '../scan.js';
 
-module.exports = (config, args) => {
+const rule = (config, args) => {
   if (config.trim_trailing_whitespace) {
     scan({
       pattern: /[ \t]+$/gm,
@@ -9,3 +9,5 @@ module.exports = (config, args) => {
     }, args);
   }
 };
+
+export default rule;

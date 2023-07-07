@@ -8,7 +8,7 @@ import loopRoot from '../editorconfig/loop-root.js';
 import getRoot from '../editorconfig/get-root.js';
 import defaults from '../editorconfig/defaults.js';
 import getConfig from '../editorconfig/get-config.js';
-import samples from './samples';
+import samples from './samples.js'; // eslint-disable-line ava/no-import-test-files
 // Do NOT use `t.same` directly.
 // See also [sindresorhus/ava#617](https://github.com/sindresorhus/ava/issues/617).
 const same = (t, a, b) => t.same(sortKeys(a), sortKeys(b));
@@ -46,7 +46,7 @@ const zConfig = (t, file, expected) => getConfig(file).tap(
   },
 );
 
-test((t) => {
+test('Get root and config', (t) => {
   Promise.all([
     zRoot(t, '/crlf/near.md', {
       'root': true,

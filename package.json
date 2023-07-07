@@ -3,6 +3,7 @@
   "version": "1.0.4",
   "description": "Let EditorConfig and Textlint works together.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "lint": "xo",
     "test:only": "ava test/**/*.spec.js",

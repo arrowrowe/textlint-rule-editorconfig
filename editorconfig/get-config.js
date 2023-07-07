@@ -1,12 +1,12 @@
-const getRoot = require('./get-root');
-const loopRoot = require('./loop-root');
+import path from 'node:path';
+import clone from 'clone';
+import extend from 'extend';
+import getRoot from './get-root.js';
+import loopRoot from './loop-root.js';
 
 const sortBy = (array, prop) => array.sort((a, b) => a[prop] - b[prop]);
-const clone = require('clone');
-const extend = require('extend');
-const path = require('node:path');
 
-module.exports = (file) => getRoot(file).then((root) => {
+const getConfig = (file) => getRoot(file).then((root) => {
   const options = [];
   loopRoot(root, (option) => {
     if (option._pattern(path.relative(option._dir, file))) {
@@ -18,7 +18,7 @@ module.exports = (file) => getRoot(file).then((root) => {
   }
 
   sortBy(options, '_priority');
-  options.map(clone);
+  options.map((option) => clone(option));
   extend.apply(extend, options);
   const returnValue = options[0];
   delete returnValue._priority;
@@ -26,3 +26,5 @@ module.exports = (file) => getRoot(file).then((root) => {
   delete returnValue._dir;
   return returnValue;
 });
+
+export default getConfig;

@@ -1,11 +1,10 @@
-'use strict';
-
-const path = require('node:path');
-const Promise = require('bluebird');
-const extend = require('extend');
-const clone = require('clone');
-const readRoot = require('./read-root');
-const defaults = require('./defaults');
+import path from 'node:path';
+import Promise from 'bluebird';
+import extend from 'extend';
+import clone from 'clone';
+import readRoot from './read-root.js';
+import defaults from './defaults.js';
+import loopRoot from './loop-root.js';
 
 const parentDir = (dir) => path.resolve(dir, '..');
 
@@ -13,9 +12,8 @@ const getRoot = function (file) {
   return this.getRootByDir(path.dirname(file));
 };
 
-const dirCache = getRoot.dirCache = Object.create(null);
-
-const loopRoot = require('./loop-root');
+const dirCache = Object.create(null);
+getRoot.dirCache = dirCache;
 
 const getLargestPriority = (root) => {
   let largest = -1;
@@ -34,7 +32,7 @@ const ensurePriority = (root) => {
   }) : root;
 };
 
-const _getRootByDir = getRoot._getRootByDir = function (dir) {
+const _getRootByDir = function (dir) {
   return readRoot(path.resolve(dir, '.editorconfig'))
     .catch(() =>
       dir === '/' ? defaults : this.getRootByDir(parentDir(dir)),
@@ -57,7 +55,9 @@ const _getRootByDir = getRoot._getRootByDir = function (dir) {
     );
 };
 
-const getRootByDir = getRoot.getRootByDir = function (dir) {
+getRoot._getRootByDir = _getRootByDir;
+
+const getRootByDir = function (dir) {
   return dir in this.dirCache
     ? Promise.resolve(this.dirCache[dir])
     : this._getRootByDir(dir).tap((root) => {
@@ -65,7 +65,7 @@ const getRootByDir = getRoot.getRootByDir = function (dir) {
     });
 };
 
-module.exports = getRoot.bind(getRoot);
-module.exports.dirCache = dirCache;
-module.exports._getRootByDir = _getRootByDir;
-module.exports.getRootByDir = getRootByDir;
+getRoot.getRootByDir = getRootByDir;
+
+export default getRoot.bind(getRoot);
+export {dirCache, _getRootByDir, getRootByDir};

@@ -1,7 +1,5 @@
-'use strict';
-
-const getConfig = require('./editorconfig/get-config');
-const rules = require('./rules');
+import getConfig from './editorconfig/get-config.js';
+import rules from './rules.js';
 
 function reporter(context, option) {
   const exports = {};
@@ -19,7 +17,9 @@ function reporter(context, option) {
   return exports;
 }
 
-module.exports = {
+const reporters = {
   linter: reporter,
   fixer: reporter,
 };
+
+export default reporters;

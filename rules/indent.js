@@ -1,6 +1,6 @@
-const scan = require('../scan');
+import scan from '../scan.js';
 
-module.exports = (config, args) => {
+const rule = (config, args) => {
   if (typeof config.indent_style !== 'string') {
     return;
   }
@@ -23,3 +23,5 @@ module.exports = (config, args) => {
   rule.pattern = /^[ \t]+/gm;
   scan(rule, args);
 };
+
+export default rule;

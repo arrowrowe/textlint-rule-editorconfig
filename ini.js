@@ -1,13 +1,9 @@
 // Based on [ini](https://github.com/npm/ini) by Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/).
 // Modified, cause here we need to know each section's priority.
 
-'use strict';
+import process from 'node:process';
 
-exports.parse = exports.decode = decode;
-exports.stringify = exports.encode = encode;
-
-exports.safe = safe;
-exports.unsafe = unsafe;
+export {decode as parse, decode, encode as stringify, encode, safe, unsafe};
 
 const eol = process.platform === 'win32' ? '\r\n' : '\n';
 
@@ -88,7 +84,8 @@ function decode(string_) {
 
     if (match[1] !== undefined) {
       section = unsafe(match[1]);
-      p = out[section] = out[section] || {};
+      p = out[section] || {};
+      out[section] = p;
       p._priority = lineIndex;
       continue;
     }

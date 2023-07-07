@@ -1,4 +1,4 @@
-module.exports = (args, report, textWarn) => {
+const report = (args, report, textWarn) => {
   const detail = {
     index: report.index,
   };
@@ -11,3 +11,5 @@ module.exports = (args, report, textWarn) => {
 
   args.context.report(args.node, new args.context.RuleError(textWarn, detail));
 };
+
+export default report;

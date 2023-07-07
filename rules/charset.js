@@ -1,7 +1,7 @@
-const jschardet = require('jschardet');
-const utilReport = require('../util/report');
+import jschardet from 'jschardet';
+import utilReport from '../util/report.js';
 
-module.exports = (config, args) => {
+const rule = (config, args) => {
   if (typeof config.charset !== 'string') {
     return;
   }
@@ -22,3 +22,5 @@ module.exports = (config, args) => {
     );
   }
 };
+
+export default rule;

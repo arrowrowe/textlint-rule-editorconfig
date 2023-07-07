@@ -1,9 +1,6 @@
-'use strict';
-
-module.exports = (root, fn) => {
-  /* eslint-disable prefer-const */
+const loopRoot = (root, fn) => {
   // MUST use `let` here......
-  for (let pattern in root) {
+  for (let pattern in root) { // eslint-disable-line prefer-const
     if (pattern === 'root') {
       continue;
     }
@@ -13,3 +10,5 @@ module.exports = (root, fn) => {
 
   return root;
 };
+
+export default loopRoot;
