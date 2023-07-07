@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import Promise from 'bluebird';
-import ini from '../ini.js';
+import {decode} from '../ini.js';
 import preRoot from './pre-root.js';
 
 // Do NOT use `Promise.promisify`,
@@ -11,6 +11,6 @@ const read = (file) => new Promise((resolve, reject) =>
   ),
 );
 
-const readRoot = (rootPath) => read(rootPath, 'utf8').then(ini.decode).then(preRoot);
+const readRoot = (rootPath) => read(rootPath, 'utf8').then(decode).then(preRoot);
 
 export default readRoot;

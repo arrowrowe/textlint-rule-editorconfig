@@ -11,10 +11,10 @@ import getConfig from '../editorconfig/get-config.js';
 import samples from './samples.js'; // eslint-disable-line ava/no-import-test-files
 // Do NOT use `t.same` directly.
 // See also [sindresorhus/ava#617](https://github.com/sindresorhus/ava/issues/617).
-const same = (t, a, b) => t.same(sortKeys(a), sortKeys(b));
+const same = (t, a, b) => t.deepEqual(sortKeys(a), sortKeys(b));
 
 test.before('Stub `fs.readFile`', () => {
-  stub(fs, 'readFile', (file, options, callback) => {
+  stub(fs, 'readFile').callsFake((file, options, callback) => {
     const data = samples[file];
     if (data) {
       callback(null, data);
@@ -46,8 +46,8 @@ const zConfig = (t, file, expected) => getConfig(file).tap(
   },
 );
 
-test('Get root and config', (t) => {
-  Promise.all([
+test('Get root and config', async (t) => {
+  await Promise.all([
     zRoot(t, '/crlf/near.md', {
       'root': true,
       '*': {

@@ -1,6 +1,8 @@
 import fs from 'node:fs';
 
-const read = (file) => fs.readFileSync('./samples/' + file + '.ini', 'utf8');
+const read = (file) => fs.readFileSync(
+  new URL(`samples/${file}.ini`, import.meta.url), 'utf8',
+);
 
 const samples = {
   '/.editorconfig': read('py-indent-tab'),

@@ -9,7 +9,8 @@ const report = (args, report, textWarn) => {
     );
   }
 
-  args.context.report(args.node, new args.context.RuleError(textWarn, detail));
+  // eslint-disable-next-line new-cap
+  args.context.report(args.node, args.context.RuleError(textWarn, detail));
 };
 
 export default report;

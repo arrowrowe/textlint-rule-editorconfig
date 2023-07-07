@@ -8,7 +8,10 @@ import rules from '../rules.js';
 const elementsSame = (t, a, b) => {
   a.sort();
   b.sort();
-  t.same(a.map((element) => sortKeys(element)), b.map((element) => sortKeys(element)));
+  t.deepEqual(
+    a.map((element) => sortKeys(element)),
+    b.map((element) => sortKeys(element)),
+  );
 };
 
 const zOption = (t, option, config, text, expected) => { // eslint-disable-line max-params
@@ -147,7 +150,7 @@ test('EOL', (t) => {
 
 test('Charset', (t) => {
   z(t, {
-    'charset': 'utf8',
+    'charset': 'utf-8', // eslint-disable-line unicorn/text-encoding-identifier-case
   }, '\u00C3\u00A0\u00C3\u00AD\u00C3\u00A0\u00C3\u00A7\u00C3\u00A3');
   z(t, {
     'charset': 'big5',
@@ -158,7 +161,7 @@ test('Charset', (t) => {
     'charset': 'big5',
   }, '\u00A6\u00B8\u00B1\u0060\u00A5\u00CE\u00B0\u00EA\u00A6\u0072\u00BC\u00D0\u00B7\u00C7\u00A6\u0072\u00C5\u00E9\u00AA\u00ED');
   z(t, {
-    'charset': 'utf8',
+    'charset': 'utf-8', // eslint-disable-line unicorn/text-encoding-identifier-case
   }, '\u00A6\u00B8\u00B1\u0060\u00A5\u00CE\u00B0\u00EA\u00A6\u0072\u00BC\u00D0\u00B7\u00C7\u00A6\u0072\u00C5\u00E9\u00AA\u00ED', [
     {index: 0},
   ]);

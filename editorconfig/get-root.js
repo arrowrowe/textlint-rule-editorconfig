@@ -9,7 +9,7 @@ import loopRoot from './loop-root.js';
 const parentDir = (dir) => path.resolve(dir, '..');
 
 const getRoot = function (file) {
-  return this.getRootByDir(path.dirname(file));
+  return getRootByDir(path.dirname(file));
 };
 
 const dirCache = Object.create(null);
@@ -35,7 +35,7 @@ const ensurePriority = (root) => {
 const _getRootByDir = function (dir) {
   return readRoot(path.resolve(dir, '.editorconfig'))
     .catch(() =>
-      dir === '/' ? defaults : this.getRootByDir(parentDir(dir)),
+      dir === '/' ? defaults : getRootByDir(parentDir(dir)),
     )
     .then((options) => {
       for (const k in options) {
@@ -49,7 +49,7 @@ const _getRootByDir = function (dir) {
     .then((options) =>
       (options.root || (dir === '/'))
         ? options
-        : this.getRootByDir(parentDir(dir)).then(
+        : getRootByDir(parentDir(dir)).then(
           (optionParent) => extend(true, clone(optionParent), ensurePriority(options)),
         ),
     );
@@ -58,14 +58,14 @@ const _getRootByDir = function (dir) {
 getRoot._getRootByDir = _getRootByDir;
 
 const getRootByDir = function (dir) {
-  return dir in this.dirCache
-    ? Promise.resolve(this.dirCache[dir])
-    : this._getRootByDir(dir).tap((root) => {
-      this.dirCache[dir] = root;
+  return dir in dirCache
+    ? Promise.resolve(dirCache[dir])
+    : _getRootByDir(dir).tap((root) => {
+      dirCache[dir] = root;
     });
 };
 
 getRoot.getRootByDir = getRootByDir;
 
-export default getRoot.bind(getRoot);
+export default getRoot;
 export {dirCache, _getRootByDir, getRootByDir};
