@@ -20,7 +20,11 @@ const zOption = (t, option, config, text, expected) => { // eslint-disable-line 
     text,
     option,
     context: {
-      RuleError: (textWarn, detail) => detail,
+      RuleError: class RuleError {
+        constructor(message, details) {
+          return details; // eslint-disable-line no-constructor-return
+        }
+      },
       report: (node, error) => errors.push(error),
       fixer: {
         replaceTextRange: (range, fix) => ({range, fix}),
