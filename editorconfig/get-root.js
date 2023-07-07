@@ -1,11 +1,10 @@
 'use strict';
 
-const path = require('path');
+const path = require('node:path');
 const Promise = require('bluebird');
-const readRoot = require('./read-root');
 const extend = require('extend');
 const clone = require('clone');
-
+const readRoot = require('./read-root');
 const defaults = require('./defaults');
 
 const parentDir = (dir) => path.resolve(dir, '..');
@@ -17,6 +16,7 @@ const getRoot = function (file) {
 const dirCache = getRoot.dirCache = Object.create(null);
 
 const loopRoot = require('./loop-root');
+
 const getLargestPriority = (root) => {
   let largest = -1;
   loopRoot(root, (option) => {
@@ -26,6 +26,7 @@ const getLargestPriority = (root) => {
   });
   return largest;
 };
+
 const ensurePriority = (root) => {
   const delta = 1 + getLargestPriority(root);
   return delta ? loopRoot(root, (option, pattern) => {
@@ -36,7 +37,7 @@ const ensurePriority = (root) => {
 const _getRootByDir = getRoot._getRootByDir = function (dir) {
   return readRoot(path.resolve(dir, '.editorconfig'))
     .catch(() =>
-      dir === '/' ? defaults : this.getRootByDir(parentDir(dir))
+      dir === '/' ? defaults : this.getRootByDir(parentDir(dir)),
     )
     .then((options) => {
       for (const k in options) {
@@ -44,21 +45,22 @@ const _getRootByDir = getRoot._getRootByDir = function (dir) {
           options[k]._dir = dir;
         }
       }
+
       return options;
     })
     .then((options) =>
-      (options.root || (dir === '/')) ?
-        options :
-        this.getRootByDir(parentDir(dir)).then(
-          (optionParent) => extend(true, clone(optionParent), ensurePriority(options))
-        )
+      (options.root || (dir === '/'))
+        ? options
+        : this.getRootByDir(parentDir(dir)).then(
+          (optionParent) => extend(true, clone(optionParent), ensurePriority(options)),
+        ),
     );
 };
 
 const getRootByDir = getRoot.getRootByDir = function (dir) {
-  return dir in this.dirCache ?
-    Promise.resolve(this.dirCache[dir]) :
-    this._getRootByDir(dir).tap((root) => {
+  return dir in this.dirCache
+    ? Promise.resolve(this.dirCache[dir])
+    : this._getRootByDir(dir).tap((root) => {
       this.dirCache[dir] = root;
     });
 };

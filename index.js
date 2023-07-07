@@ -10,14 +10,16 @@ function reporter(context, option) {
       context,
       node,
       option,
-      text: context.getSource(node)
+      text: context.getSource(node),
     };
-    rules.forEach((rule) => rule(config, args));
+    for (const rule of rules) {
+      rule(config, args);
+    }
   });
   return exports;
 }
 
 module.exports = {
   linter: reporter,
-  fixer: reporter
+  fixer: reporter,
 };

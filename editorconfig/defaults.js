@@ -6,6 +6,6 @@ module.exports = preRoot({
     _priority: 0,
     end_of_line: 'lf',
     insert_final_newline: true,
-    charset: 'utf-8'
-  }
+    charset: 'utf-8',
+  },
 });

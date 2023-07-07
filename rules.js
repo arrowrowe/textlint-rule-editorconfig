@@ -3,5 +3,5 @@ module.exports = [
   require('./rules/trailing-space'),
   require('./rules/final-newline'),
   require('./rules/eol'),
-  require('./rules/charset')
+  require('./rules/charset'),
 ];

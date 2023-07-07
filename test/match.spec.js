@@ -1,5 +1,5 @@
 import test from 'ava';
-import match from '../match';
+import match from '../match.js';
 
 test('Match basenames', (t) => {
   const any = match('*');

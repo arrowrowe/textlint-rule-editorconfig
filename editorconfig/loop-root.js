@@ -7,7 +7,9 @@ module.exports = (root, fn) => {
     if (pattern === 'root') {
       continue;
     }
+
     fn(root[pattern], pattern, root);
   }
+
   return root;
 };

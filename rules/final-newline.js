@@ -4,15 +4,23 @@ const eofTypeToChar = (eolType) => {
   if (typeof eolType !== 'string') {
     return null;
   }
+
   switch (eolType.toLowerCase()) {
-    case 'cr':
+    case 'cr': {
       return '\r';
-    case 'lf':
+    }
+
+    case 'lf': {
       return '\n';
-    case 'crlf':
+    }
+
+    case 'crlf': {
       return '\r\n';
-    default:
+    }
+
+    default: {
       return null;
+    }
   }
 };
 
@@ -22,18 +30,18 @@ module.exports = (config, args) => {
     scan({
       pattern: /([\r\n].*|^.*)$/,
       textWarn: 'No final new line',
-      report: (match) => {
+      report(match) {
         const raw = match[0];
-        return raw === '' ?
-          {fix: fix} :
-          raw.replace(/[\r\n]/g, '') ?
-            {
+        return raw === ''
+          ? {fix}
+          : (raw.replace(/[\r\n]/g, '')
+            ? {
               index: match.index + raw.length,
               length: 0,
-              fix: fix
-            } :
-            null;
-      }
+              fix,
+            }
+            : null);
+      },
     }, args);
   }
 };

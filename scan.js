@@ -7,6 +7,7 @@ const scanOnce = (rule, args, match) => {
   if (report === null) {
     return;
   }
+
   report.index = 'index' in report ? report.index : match.index;
   report.length = 'length' in report ? report.length : match[0].length;
   utilReport(args, report, rule.textWarn);
